@@ -129,10 +129,10 @@ PrintPicture endp
 
 
 # 與現有壓縮檔案比較
-TIF檔為早期印表機匯出的點陣圖格式，可選擇以不同方式壓縮。
-而這些方式有對應的檔案格式，例如PNG檔以Deflate方式壓縮、GIF以LZW方式壓縮...。
-而CCITT是針對而為圖像的延伸壓縮方式，以Run Lenhth Coding編碼第一行，用Pass Mode、Horizontal Mode、Veritical Mode紀錄與上一行的差異。
-在BMP檔案，因為沒有壓縮，所以以0 ~ 15編碼儲存，就約等於是以灰階儲存，檔案會節省至1/3，所以公平起見全部檔案都是以編碼資料儲存。
+TIF檔為早期印表機匯出的點陣圖格式，可選擇以不同方式壓縮。<br>
+而這些方式有對應的檔案格式，例如PNG檔以Deflate方式壓縮、GIF以LZW方式壓縮...。<br>
+而CCITT是針對而為圖像的延伸壓縮方式，以Run Lenhth Coding編碼第一行，用Pass Mode、Horizontal Mode、Veritical Mode紀錄與上一行的差異。<br>
+在BMP檔案，因為沒有壓縮，所以以0 ~ 15編碼儲存，就約等於是以灰階儲存，檔案會節省至1/3，所以公平起見全部檔案都是以編碼資料儲存。<br>
 
 檔案大小<br>
 Algorithm |  CoP  | Fish  |  Veg  |File Format|  CoP  | Fish  |  Veg 
@@ -154,10 +154,10 @@ CCITT_T6  |   X |   X |   X |TIF_CCITT  |4.846|5.477|5.235
 JPEG      |13.49|13.21|14.29|JPEG(80%)  |13.53|13.23|14.63
 --        |     |     |     |JPEG(100%) |3.023|2.937|3.512
 
-以編碼(0 ~ 15)壓縮，因為JPEG無論如何會消除一些低頻，如果是灰階或全彩不會看出差異
-但編碼順序是沒有邏輯的，所以解壓縮回去看起來失真非常多
+以編碼(0 ~ 15)壓縮，因為JPEG無論如何會消除一些低頻，如果是灰階或全彩不會看出差異,<br>
+但編碼順序是沒有邏輯的，所以解壓縮回去看起來失真非常多。<br>
 <img src="image/jpeg1.png" width="1000"><br>
-以全彩壓縮便看不出差異
+以全彩壓縮便看不出差異<br>
 <img src="image/jpeg2.png" width="500"><br>
 
 Demo程式：<a href='https://colab.research.google.com/github/majaja068/Assembly_Sokoban/blob/v2022/supplement/Sokoban_FileFormat.ipynb'>Sokoban_FileFormat.ipynb</a>
