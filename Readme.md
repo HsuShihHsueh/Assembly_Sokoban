@@ -1,9 +1,9 @@
 # Sokoban by 8086
 
  👇 youtube link<br>
-
 <kbd><a href="https://www.youtube.com/watch?v=6fKehSFpv5g"><img src="http://img.youtube.com/vi/6fKdhSFpv5g/maxresdefault.jpg" width="700" style="border:2px #ccc solid;padding:5px;"></a></kbd><br> 
 
+Code：<a herf='v2_7mo/v2_7mo.asm'>Here</a>
 
 # masm資料容量限制
 
@@ -28,12 +28,12 @@ Huffman Code的編碼方式為：出現頻率較高的字元，使用長度較�
 <img src="image/tree.png" width="600"><br>
 因為在組合語言實作tree太過困難，所以將其轉成矩陣儲存，演算法如下：<br>
 由B12向下尋找子節點，並將子節點紀錄在矩陣上<br>
-<img src="image/huffman_tree1.png" height="200"><br>
+<img src="image/huffman_tree1.png" width="600"><br>
 如果該節點為分支，則改成紀錄離左邊的支點需要位移多少<br>
 如果該節點為端點，代表此節點有編碼<br>
-<img src="image/huffman_tree2.png" height="200"><br>
+<img src="image/huffman_tree2.png" width="600"><br>
 將再編碼成二進制(是分支或是端點需多一位元紀錄)<br>
-<img src="image/huffman_tree3.png" height="200"><br>
+<img src="image/huffman_tree3.png" width="600"><br>
 程式如下：
 ```python
 def get_codebook_node():
@@ -65,13 +65,15 @@ Differential Coding 的編碼方式為記錄某一點資料與前一點資料的
 
 以CoP這張照片為例，可以看到0佔所有資料遠超過其他數值，如果再加上tunstall code(將多筆資料一起編碼)壓縮結果會更好<br>
 <img src="image/differential_probability.png" width="400"><br>
+Demo程式：<a herf=https://colab.research.google.com/github/majaja068/Assembly_Sokoban/blob/v2022/supplement/Sokoban_HuffmanCoding.ipynb>Sokoban_HuffmanCoding.ipynb</a>
 
 # Run Length Coding
 Run Length Coding 是將連續相同顏色合併，並記錄哪個顏色出現幾次做壓縮。<br>
 既不需用Codebook，解碼也較簡單，再加上壓縮比剛好也是最好的，所以最後選用此方式。<br>
 <img src="https://www.datocms-assets.com/26885/1628663040-run-length.png?auto=format&fm=jpg" width="400"><br>
 而因為本程式顯示模式為16色，所以每一byte中會多出4bits，所以此4bits可記錄出現幾次相同顏色(超出16個相同會切斷)。<br>
-
+Demo程式：<a herf=https://colab.research.google.com/github/majaja068/Assembly_Sokoban/blob/v2022/supplement/Sokoban_RunLengthCoding.ipynb>Sokoban_RunLengthCoding.ipynb</a>
+#
 下列表為前三種方法的壓縮比比較:
 Method              | CoP | Fish | Veg
 --------------------|:---:|:----:|-----
@@ -79,8 +81,8 @@ Huffman Cod         |3.212|3.716 |3.950
 Differential Huffman|5.213|4.583 |5.276
 Run Leength Code    |6.197|5.057 |6.548
 
-#
-如遇到因背景不同需切換顏色的狀況，在本程式設定了所有圖片都沒出現的'7'作為透明色，透明色可依```transparnt_color```變數的不同做顏色調整，在磚頭的選擇以及人物上使用到。
+# Transparent Color
+如遇到因背景不同需切換顏色的狀況，在本程式設定了所有圖片都沒出現的'7'作為透明色，透明色可依```transparnt_color```變數的不同做顏色調整，在磚頭的選擇以及人物上使用到。<br>
 masm繪製程式如下：
 ```asm
 PrintPicture proc near     
@@ -127,11 +129,33 @@ PrintPicture endp
 
 
 # 與現有壓縮檔案比較
+TIF檔為早期印表機匯出的點陣圖格式，可選擇以不同方式壓縮。
+而這些方式有對應的檔案格式，例如PNG檔以Deflate方式壓縮、GIF以LZW方式壓縮...。
+而CCITT是針對而為圖像的延伸壓縮方式，以Run Lenhth Coding編碼第一行，用Pass Mode、Horizontal Mode、Veritical Mode紀錄與上一行的差異。
+在BMP檔案，因為沒有壓縮，所以以0 ~ 15編碼儲存，就約等於是以灰階儲存，檔案會節省至1/3，所以公平起見全部檔案都是以編碼資料儲存。
 
+檔案大小<br>
+Algorithm |  CoP  | Fish  |  Veg  |File Format|  CoP  | Fish  |  Veg 
+----------|:-----:|:-----:|:-----:|:---------:|:-----:|:-----:|-------
+None      |22,134B|22,134B|22,134B|BMP        |23,078B|23,078B|23,078B
+Deflate   | 2,712B| 3,144B| 2,474B|PNG        | 3,191B| 3,883B| 3,168B
+LZW       | 3,420B| 4,102B| 3,152B|GIF        |10,035B|10,771B| 8,952B
+CCITT_T6  |    X B|    X B|    X B|TIF_CCITT  | 4,762B| 4,214B| 4,408B
+JPEG      | 1,641B| 1,675B| 1,549B|JPEG(80%)  | 1,706B| 1,744B| 1,577B
+          |       |       |       |JPEG(100%) | 7,634B| 7,859B| 6,572B
 
-Algorithm | CoP | Fish | Veg |File Format| CoP | Fish | Veg 
-----------|:---:|:----:|:---:|:---------:|3.212|3.716 |3.950
-Deflate   |3.212|3.716 |3.950|PNG        |5.213|4.583 |5.276
-LZW       |5.213|4.583 |5.276|GIF        |6.197|5.057 |6.548
-CCITT_T6  |6.197|5.057 |6.548|TIF_CCITT  |6.197|5.057 |6.548
-JPEG      |6.197|5.057 |6.548|JPEG       |6.197|5.057 |6.548
+壓縮比<br>
+Algorithm | CoP |Fish | Veg |File Format| CoP |Fish | Veg 
+----------|:---:|:---:|:---:|:---------:|:---:|:---:|-----
+None      |1.000|1.000|1.000|BMP        |1.000|1.000|1.000  
+Deflate   |8.162|7.040|8.947|PNG        |7.232|5.933|7.285  
+LZW       |6.472|5.396|7.022|GIF        |2.300|2.143|2.578
+CCITT_T6  |   X |   X |   X |TIF_CCITT  |4.846|5.477|5.235
+JPEG      |13.49|13.21|14.29|JPEG(80%)  |13.53|13.23|14.63
+          |     |     |     |JPEG(100%) |3.023|2.937|3.512
+
+以編碼(0 ~ 15)壓縮，因為JPEG無論如何會消除一些低頻，如果是灰階或全彩不會看出差異
+但編碼順序是沒有邏輯的，所以解壓縮回去看起來失真非常多
+<img src="image/jpeg1.png" width="1000"><br>
+以全彩壓縮便看不出差異
+<img src="image/jpeg2.png" width="500"><br>
