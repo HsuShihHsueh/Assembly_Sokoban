@@ -1,7 +1,7 @@
 # Sokoban by 8086
 
  👇 youtube link<br>
-<kbd><a href="https://www.youtube.com/watch?v=6fKehSFpv5g"><img src="http://img.youtube.com/vi/6fKdhSFpv5g/maxresdefault.jpg" width="700" style="border:2px #ccc solid;padding:5px;"></a></kbd><br> 
+<kbd><a href="https://www.youtube.com/watch?v=yXwf9eVj6kQ"><img src="http://img.youtube.com/vi/yXwf9eVj6kQ/maxresdefault.jpg" width="700" style="border:2px #ccc solid;padding:5px;"></a></kbd><br> 
 
 Code：<a href='v2_7mo/v2_7mo.asm'>Here</a>
 
@@ -9,8 +9,8 @@ Code：<a href='v2_7mo/v2_7mo.asm'>Here</a>
 
 因為本程式使用MASM(Microsoft Macro Assembler)組合語言，在smal model下資料總長度不能超過64KB<br>
 <a href='https://books.google.com.tw/books?id=PhJRrlxoczMC&pg=PA129&lpg=PA129&dq=%E5%9F%B7%E8%A1%8C%E6%AA%94%E6%9C%80%E5%A4%A764KB%E7%84%A1%E6%B3%95%E5%9F%B7%E8%A1%8C&source=bl&ots=5pgt6LUs1M&sig=ACfU3U3F-JvcqfdIanJ6L1_FFPi4kOnCbg&hl=zh-TW&sa=X&ved=2ahUKEwiWydDL4fv1AhUGVpQKHbALDGQQ6AF6BAgTEAI#v=onepage&q=%E5%9F%B7%E8%A1%8C%E6%AA%94%E6%9C%80%E5%A4%A764KB%E7%84%A1%E6%B3%95%E5%9F%B7%E8%A1%8C&f=false'>(規定)</a>
-，所以在第一版執行時發現當資料大小超出一點時，資料的結尾會發生毀損，如下圖，關卡八按鈕圖案毀損，因此檔案必需經過壓縮，而組合語言相較其他語言無法簡單的找到對應的函式庫，所以選擇的壓縮方式會以兼具易於撰寫及壓縮比來做選擇。
-<img src="image/distortion.png" width="600"><br>
+，所以在第一版執行時發現當資料大小超出一點時，資料的結尾會發生毀損，如下圖，關卡八按鈕圖案毀損，因此檔案必需經過壓縮，而組合語言相較其他語言無法簡單的找到對應的函式庫，所以選擇的壓縮方式會以兼具易於撰寫及壓縮比來做選擇。<br>
+<p align="center"><img src="image/distortion.png" width="450"><br></p>
 依上述需求實作了三種壓縮方法：
 - Huffman Coding
 - Huffman Code by Differential Coding
@@ -56,7 +56,7 @@ def node2code(node):
   return huff_tree[node]['code']
 ```
 等真正的碼進來時便可今由上面的方式解碼，如果落到的位置為分支，則位移後再取下一碼，直到落到的是端點，由此重複。<br>
-<img src="image/code1.png" width="300"><br>
+<p align="center"><img src="image/code1.png" width="300"><br></p>
 並將資料轉成組合語言格式。<br>
 
 # Huffman Code by Differential Coding
@@ -64,17 +64,18 @@ Differential Coding 的編碼方式為記錄某一點資料與前一點資料的
 如果某一點資料與前一點資料相同，便會記錄成0，此方法紀錄圖案會大大增加資料為0的佔比，而機率越不平均壓縮效果越好，由此改進壓縮效果。<br>
 
 以CoP這張照片為例，可以看到0佔所有資料遠超過其他數值，如果再加上tunstall code(將多筆資料一起編碼)壓縮結果會更好<br>
-<img src="image/differential_probability.png" width="400"><br>
-Demo程式：<a href='https://colab.research.google.com/github/majaja068/Assembly_Sokoban/blob/v2022/supplement/Sokoban_HuffmanCoding.ipynb'>Sokoban_HuffmanCoding.ipynb</a>
+<p align="center"><img src="image/differential_probability.png" width="400"><br></p>
+Demo程式：<a href='https://colab.research.google.com/github/HsuShihHsueh/Assembly_Sokoban/blob/v2022/supplement/Sokoban_HuffmanCoding.ipynb'>Sokoban_HuffmanCoding.ipynb</a>
 
 # Run Length Coding
 Run Length Coding 是將連續相同顏色合併，並記錄哪個顏色出現幾次做壓縮。<br>
 既不需用Codebook，解碼也較簡單，再加上壓縮比剛好也是最好的，所以最後選用此方式。<br>
-<img src="https://www.datocms-assets.com/26885/1628663040-run-length.png?auto=format&fm=jpg" width="400"><br>
+<p align="center"><img src="https://www.datocms-assets.com/26885/1628663040-run-length.png?auto=format&fm=jpg" width="400"></p><br>
 而因為本程式顯示模式為16色，所以每一byte中會多出4bits，所以此4bits可記錄出現幾次相同顏色(超出16個相同會切斷)。<br>
-Demo程式：<a href='https://colab.research.google.com/github/majaja068/Assembly_Sokoban/blob/v2022/supplement/Sokoban_RunLengthCoding.ipynb'>Sokoban_RunLengthCoding.ipynb</a>
+Demo程式：<a href='https://colab.research.google.com/github/HsuShihHsueh/Assembly_Sokoban/blob/v2022/supplement/Sokoban_RunLengthCoding.ipynb'>Sokoban_RunLengthCoding.ipynb</a>
+
 #
-下列表為前三種方法的壓縮比比較:
+下列表為前三種方法的壓縮比比較:<br>
 Method              | CoP | Fish | Veg
 --------------------|:---:|:----:|-----
 Huffman Cod         |3.212|3.716 |3.950
@@ -160,4 +161,4 @@ JPEG      |13.49|13.21|14.29|JPEG(80%)  |13.53|13.23|14.63
 以全彩壓縮便看不出差異<br>
 <img src="image/jpeg2.png" width="500"><br>
 
-Demo程式：<a href='https://colab.research.google.com/github/majaja068/Assembly_Sokoban/blob/v2022/supplement/Sokoban_FileFormat.ipynb'>Sokoban_FileFormat.ipynb</a>
+Demo程式：<a href='https://colab.research.google.com/github/HsuShihHsueh/Assembly_Sokoban/blob/v2022/supplement/Sokoban_FileFormat.ipynb'>Sokoban_FileFormat.ipynb</a>
