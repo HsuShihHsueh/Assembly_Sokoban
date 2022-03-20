@@ -1,0 +1,18 @@
+{
+	"name" : "Assembly_Sokoban",
+	"thumbnail" : "http://img.youtube.com/vi/yXwf9eVj6kQ/maxresdefault.jpg",
+	"project_zh" : "【組合語言】推箱子遊戲",
+	"project_en" : "Sokoban by Assembly (8086)",
+	"hashtag" : ["#Assembly","#DataCompress","#RunLengthCode","#Sokoban"],
+	"description_zh" : "本項目為組合語言期末專題，主要為將推箱子遊戲的人物換成政治人物，因圖片容量超出檔案大小，因此圖片需經過壓縮，經測試，選擇兼具壓縮比與解碼效率的RunLengthCode做壓縮。",
+	"description_en" :	"This project is a final project of Assembly language, is a Sokoban game which changes the characters into political figures. Since the image capacity exceeds the file size, the image needs to be compressed. After testing, RunLengthCode, which has both highly compression ratio and decoding efficiency, is selected for used.",
+	"github" : "https://github.com/HsuShihHsueh/Assembly_Sokoban",
+	"youtube" : "https://www.youtube.com/watch?v=yXwf9eVj6kQ",
+	"date" : "Last Updated : 2022-02-13",
+	"picture" : [
+		"http://img.youtube.com/vi/yXwf9eVj6kQ/maxresdefault.jpg",
+		"https://github.com/HsuShihHsueh/Assembly_Sokoban/raw/v2022/image/1.png",
+		"https://github.com/HsuShihHsueh/Assembly_Sokoban/raw/v2022/image/2.gif",
+		"https://raw.githubusercontent.com/HsuShihHsueh/Assembly_Sokoban/v2022/image/huffman_tree3.png"
+	]
+}
